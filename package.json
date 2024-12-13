@@ -1,0 +1,24 @@
+{
+    "name": "ubi-calculator",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "node ./node_modules/.bin/vite",
+        "build": "node ./node_modules/.bin/vite build",
+        "preview": "node ./node_modules/.bin/vite preview"
+    },
+    "dependencies": {
+        "@chakra-ui/react": "^2.8.0",
+        "@emotion/react": "^11.11.0",
+        "@emotion/styled": "^11.11.0",
+        "chart.js": "^4.3.0",
+        "framer-motion": "^10.12.16",
+        "react": "^18.2.0",
+        "react-chartjs-2": "^5.2.0",
+        "react-dom": "^18.2.0"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-react": "^4.3.4",
+        "vite": "^6.0.3"
+    }
+}
