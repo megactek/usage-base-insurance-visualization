@@ -104,7 +104,7 @@ const Calculator = ({ onCalculate }) => {
 
         <Divider />
         <Heading size="md">Margin Principle - Scenario 1</Heading>
-        <Text color="gray.600">B has larger pool than A (B &gt; A)</Text>
+        <Text color="gray.600">A has larger pool than B (A &gt; B)</Text>
         <Grid
           templateColumns={{
             base: "1fr",
@@ -113,9 +113,9 @@ const Calculator = ({ onCalculate }) => {
           gap={6}
         >
           <GridItem>
-            <Tooltip label="Number of perfectly safe investments - Smaller Pool (A)">
+            <Tooltip label="Number of perfectly safe investments - Larger Pool (A)">
               <FormControl>
-                <FormLabel>Perfectly Safe - Small Pool (A)</FormLabel>
+                <FormLabel>Perfectly Safe - Larger Pool (A)</FormLabel>
                 <NumberInput min={0}>
                   <NumberInputField
                     value={values.perfectlySafeA}
@@ -127,9 +127,9 @@ const Calculator = ({ onCalculate }) => {
           </GridItem>
 
           <GridItem>
-            <Tooltip label="Number of somewhat safe investments - Larger Pool (B)">
+            <Tooltip label="Number of somewhat safe investments - Smaller Pool (B)">
               <FormControl>
-                <FormLabel>Somewhat Safe - Large Pool (B)</FormLabel>
+                <FormLabel>Somewhat Safe - Smaller Pool (B)</FormLabel>
                 <NumberInput min={0}>
                   <NumberInputField
                     value={values.somewhatSafeB}
