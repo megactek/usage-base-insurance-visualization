@@ -104,7 +104,7 @@ const Calculator = ({ onCalculate }) => {
 
         <Divider />
         <Heading size="md">Margin Principle - Scenario 1</Heading>
-        <Text color="gray.600">A has larger pool than B (A &gt; B)</Text>
+        <Text color="gray.600">B has larger pool than A (B &gt; A)</Text>
         <Grid
           templateColumns={{
             base: "1fr",
@@ -143,7 +143,7 @@ const Calculator = ({ onCalculate }) => {
 
         <Divider />
         <Heading size="md">Margin Principle - Scenario 2</Heading>
-        <Text color="gray.600">B has larger pool than A (B &gt; A)</Text>
+        <Text color="gray.600">A has larger pool than B (A &gt; B)</Text>
         <Grid
           templateColumns={{
             base: "1fr",
