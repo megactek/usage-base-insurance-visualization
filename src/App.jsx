@@ -35,24 +35,27 @@ function App() {
     const C = Y / K;
 
     // Calculate Margin Principle - Scenario 1 (B > A)
-    const b1 = values.somewhatSafeB / 100; // B/100
-    const a1 = values.perfectlySafeA / 100; // A/100
-    const aMultiplier = 1.5; // A earns 50% more than B per unit
-    const scenarioOneD = a1 * Y * aMultiplier; // What A earns (higher per unit)
-    const scenarioOneE = b1 * Y; // What B earns (base rate)
+    // In this scenario, B (Somewhat Safe) has 600 and A (Perfectly Safe) has 400
+    const totalInvestments = values.somewhatSafeB + values.perfectlySafeA;
+    const b1 = totalInvestments > 0 ? values.somewhatSafeB / totalInvestments : 0; // B proportion (e.g., 600/1000 = 0.6)
+    const a1 = totalInvestments > 0 ? values.perfectlySafeA / totalInvestments : 0; // A proportion (e.g., 400/1000 = 0.4)
+    const scenarioOneE = b1 * Y; // What B (Somewhat Safe) earns (60% of Y)
+    const scenarioOneD = a1 * Y; // What A (Perfectly Safe) earns (40% of Y)
 
     // Calculate Margin Principle - Scenario 2 (A > B)
-    const b = (values.aeDifference / 100) * Y; // æ% of Y
-    const c = Y - b; // Remaining after b
+    // In this scenario, A (Perfectly Safe) has 600 and B (Somewhat Safe) has 400
+    const reservedRatio = 0.2; // 20% reserved for Perfectly Safe
+    const reservedAmount = Y * reservedRatio; // Reserved amount (e.g., 1,660,000)
+    const remainingAmount = Y - reservedAmount; // Remaining amount (e.g., 6,640,000)
+
+    // Calculate shares from the remaining amount
     const totalPercentage = values.aPercentage + values.bPercentage;
-    const adjustedAPercentage =
-      totalPercentage > 0
-        ? Math.max(0.6, values.aPercentage / totalPercentage) // A gets at least 60% of the total
-        : 0.6;
+    const adjustedAPercentage = totalPercentage > 0 ? values.aPercentage / totalPercentage : 0.6;
     const adjustedBPercentage = 1 - adjustedAPercentage;
 
-    const aEarnings = adjustedAPercentage * c + b; // A gets æ% of Y plus their share of c
-    const bEarnings = adjustedBPercentage * c; // B gets their share of remaining c
+    // Final earnings calculations
+    const aEarnings = reservedAmount + adjustedAPercentage * remainingAmount; // Perfectly Safe gets reserved amount plus share of remaining
+    const bEarnings = adjustedBPercentage * remainingAmount; // Somewhat Safe gets their share of remaining
 
     setResults({
       annualOutcome: Z,
@@ -63,8 +66,6 @@ function App() {
         E: scenarioOneE,
       },
       marginScenario2: {
-        b: b,
-        c: c,
         aEarnings: aEarnings,
         bEarnings: bEarnings,
       },
