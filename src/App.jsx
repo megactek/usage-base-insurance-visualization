@@ -34,41 +34,46 @@ function App() {
     const K = values.portfolioSize * 0.02; // top 2% of portfolio
     const C = Y / K;
 
-    // Calculate Margin Principle - Scenario 1 (B > A)
-    // In this scenario, B (Somewhat Safe) has 600 and A (Perfectly Safe) has 400
-    const totalInvestments = values.somewhatSafeB + values.perfectlySafeA;
-    const b1 = totalInvestments > 0 ? values.somewhatSafeB / totalInvestments : 0; // B proportion (e.g., 600/1000 = 0.6)
-    const a1 = totalInvestments > 0 ? values.perfectlySafeA / totalInvestments : 0; // A proportion (e.g., 400/1000 = 0.4)
-    const scenarioOneE = b1 * Y; // What B (Somewhat Safe) earns (60% of Y)
-    const scenarioOneD = a1 * Y; // What A (Perfectly Safe) earns (40% of Y)
+    // Initialize margin scenario results
+    let marginScenario1 = { D: 0, E: 0 };
+    let marginScenario2 = { aEarnings: 0, bEarnings: 0 };
 
-    // Calculate Margin Principle - Scenario 2 (A > B)
-    // In this scenario, A (Perfectly Safe) has 600 and B (Somewhat Safe) has 400
-    const reservedRatio = 0.2; // 20% reserved for Perfectly Safe
-    const reservedAmount = Y * reservedRatio; // Reserved amount (e.g., 1,660,000)
-    const remainingAmount = Y - reservedAmount; // Remaining amount (e.g., 6,640,000)
+    // Only calculate margin scenarios if both PS and SS values are provided
+    if (values.perfectlySafeA > 0 && values.somewhatSafeB > 0) {
+      // Calculate Margin Principle - Scenario 1 (B > A)
+      const totalInvestments = values.somewhatSafeB + values.perfectlySafeA;
+      const b1 = values.somewhatSafeB / totalInvestments;
+      const a1 = values.perfectlySafeA / totalInvestments;
+      marginScenario1 = {
+        D: a1 * Y, // What A (Perfectly Safe) earns
+        E: b1 * Y, // What B (Somewhat Safe) earns
+      };
 
-    // Calculate shares from the remaining amount
-    const totalPercentage = values.aPercentage + values.bPercentage;
-    const adjustedAPercentage = totalPercentage > 0 ? values.aPercentage / totalPercentage : 0.6;
-    const adjustedBPercentage = 1 - adjustedAPercentage;
+      // Calculate Margin Principle - Scenario 2 (A > B)
+      // Using two-step calculation approach
+      const totalInvestmentsScenario2 = values.marginA + values.marginB;
+      if (totalInvestmentsScenario2 > 0) {
+        // Step 1: Calculate reserved portion for PS (20% based on 200/1000 ratio)
+        const reservedPortion = Y * 0.2;
+        const remainingAmount = Y - reservedPortion;
 
-    // Final earnings calculations
-    const aEarnings = reservedAmount + adjustedAPercentage * remainingAmount; // Perfectly Safe gets reserved amount plus share of remaining
-    const bEarnings = adjustedBPercentage * remainingAmount; // Somewhat Safe gets their share of remaining
+        // Step 2: Distribute remaining amount based on proportions
+        const aRatio = values.marginA / totalInvestmentsScenario2;
+        const bRatio = values.marginB / totalInvestmentsScenario2;
+
+        marginScenario2 = {
+          aEarnings: aRatio * remainingAmount + reservedPortion, // PS gets proportional share plus reserved
+          bEarnings: bRatio * remainingAmount, // SS gets proportional share of remaining
+        };
+      }
+    }
 
     setResults({
       annualOutcome: Z,
       monthlyOutcome: Y,
       equityPrincipleEarnings: C,
-      marginScenario1: {
-        D: scenarioOneD,
-        E: scenarioOneE,
-      },
-      marginScenario2: {
-        aEarnings: aEarnings,
-        bEarnings: bEarnings,
-      },
+      marginScenario1,
+      marginScenario2,
     });
   };
 

@@ -30,9 +30,6 @@ const Calculator = ({ onCalculate }) => {
     // Margin Principle - Scenario 2 (A > B)
     marginA: 0, // A (larger pool)
     marginB: 0, // B (smaller pool)
-    aeDifference: 0, // æ
-    aPercentage: 0, // A%
-    bPercentage: 0, // B%
   });
 
   const handleChange = (name, value) => {
@@ -148,47 +145,26 @@ const Calculator = ({ onCalculate }) => {
           templateColumns={{
             base: "1fr",
             md: "repeat(2, 1fr)",
-            lg: "repeat(3, 1fr)",
           }}
           gap={6}
         >
           <GridItem>
-            <Tooltip label="Difference between A and B (æ)">
+            <Tooltip label="Number of perfectly safe investments - Larger Pool (A)">
               <FormControl>
-                <FormLabel>A-B Difference (æ)</FormLabel>
+                <FormLabel>Perfectly Safe - Larger Pool (A)</FormLabel>
                 <NumberInput min={0}>
-                  <NumberInputField
-                    value={values.aeDifference}
-                    onChange={(e) => handleChange("aeDifference", e.target.value)}
-                  />
+                  <NumberInputField value={values.marginA} onChange={(e) => handleChange("marginA", e.target.value)} />
                 </NumberInput>
               </FormControl>
             </Tooltip>
           </GridItem>
 
           <GridItem>
-            <Tooltip label="Percentage for A">
+            <Tooltip label="Number of somewhat safe investments - Smaller Pool (B)">
               <FormControl>
-                <FormLabel>A Percentage</FormLabel>
-                <NumberInput min={0} max={100}>
-                  <NumberInputField
-                    value={values.aPercentage}
-                    onChange={(e) => handleChange("aPercentage", e.target.value)}
-                  />
-                </NumberInput>
-              </FormControl>
-            </Tooltip>
-          </GridItem>
-
-          <GridItem>
-            <Tooltip label="Percentage for B">
-              <FormControl>
-                <FormLabel>B Percentage</FormLabel>
-                <NumberInput min={0} max={100}>
-                  <NumberInputField
-                    value={values.bPercentage}
-                    onChange={(e) => handleChange("bPercentage", e.target.value)}
-                  />
+                <FormLabel>Somewhat Safe - Smaller Pool (B)</FormLabel>
+                <NumberInput min={0}>
+                  <NumberInputField value={values.marginB} onChange={(e) => handleChange("marginB", e.target.value)} />
                 </NumberInput>
               </FormControl>
             </Tooltip>
